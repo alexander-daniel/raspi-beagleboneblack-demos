@@ -40,7 +40,7 @@ temperature_trace = Scatter(x=[],
                       yaxis='y1',
                       stream=dict(
                         token=stream_tokens[0],
-                        maxpoints=300)
+                        maxpoints=3600)
                         )
 
 pressure_trace = Scatter(x=[],
@@ -50,7 +50,7 @@ pressure_trace = Scatter(x=[],
                       yaxis='y2',
                       stream=dict(
                         token=stream_tokens[1],
-                        maxpoints=300)
+                        maxpoints=3600)
                         )
 
 altitude_trace = Scatter(x=[],
@@ -60,7 +60,7 @@ altitude_trace = Scatter(x=[],
                       yaxis='y3',
                       stream=dict(
                         token=stream_tokens[2],
-                        maxpoints=300)
+                        maxpoints=3600)
                         )
 
 sealevel_pressure_trace = Scatter(x=[],
@@ -70,7 +70,7 @@ sealevel_pressure_trace = Scatter(x=[],
                       yaxis='y4',
                       stream=dict(
                         token=stream_tokens[3],
-                        maxpoints=300)
+                        maxpoints=3600)
                         )
 
 # Package them into data object
