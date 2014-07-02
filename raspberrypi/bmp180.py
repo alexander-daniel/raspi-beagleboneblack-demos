@@ -131,4 +131,4 @@ while True:
 
 
     # delay between stream posts
-    time.sleep(0.05)
+    time.sleep(1)
