@@ -39,9 +39,6 @@ while True:
 
     reading = ADC.read(sensor_pin)
     
-    #reading = SERIESRESISTOR / reading;
-    print reading
-    
     date_stamp = datetime.datetime.now()
 
     stream.write({
