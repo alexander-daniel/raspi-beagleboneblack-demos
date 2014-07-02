@@ -1,6 +1,8 @@
 import plotly.plotly as py
+from plotly.graph_objs import *
 import json
 import time
+import datetime
 import Adafruit_BMP.BMP085 as BMP085
 
 # Default constructor will pick a default I2C bus.
@@ -22,41 +24,111 @@ sensor = BMP085.BMP085(mode=BMP085.BMP085_ULTRAHIGHRES)
 # consumption are primarily the differences).  The default mode is STANDARD.
 #sensor = BMP085.BMP085(mode=BMP085.BMP085_ULTRAHIGHRES)
 
-# print 'Temp = {0:0.2f} *C'.format(sensor.read_temperature())
-# print 'Pressure = {0:0.2f} Pa'.format(sensor.read_pressure())
-# print 'Altitude = {0:0.2f} m'.format(sensor.read_altitude())
-# print 'Sealevel Pressure = {0:0.2f} Pa'.format(sensor.read_sealevel_pressure())
-
 
 
 username = 'workshop'
 api_key = 'v6w5xlbx9j'
-stream_token = '25tm9197rz'
+stream_tokens = ['25tm9197rz','unbi52ww8a','ibsfyg7qd8','t3ugglls9r']
 stream_server = 'http://stream.plot.ly'
 
 py.sign_in(username, api_key)
-    
-print py.plot([{
-    'x': [], 
-    'y': [], 
-    'type': 'scatter',
-    'stream': {
-        'token': stream_token, 
-        'maxpoints': 200
-        }
-    }], 
-    filename='Raspberry Pi BMP180 Demo',
-    fileopt='overwrite')
 
-stream = py.Stream(stream_token)
-stream.open()
+temperature_trace = Scatter(x=[],
+                      y=[],
+                      mode='lines+markers',
+                      name='Temperature (C)',
+                      yaxis='y1',
+                      stream=dict(
+                        token=stream_tokens[0],
+                        maxpoints=300)
+                        )
 
-i = 0
+pressure_trace = Scatter(x=[],
+                      y=[],
+                      mode='lines+markers',
+                      name='Pressure (P)',  
+                      yaxis='y2',
+                      stream=dict(
+                        token=stream_tokens[1],
+                        maxpoints=300)
+                        )
+
+altitude_trace = Scatter(x=[],
+                      y=[],
+                      mode='lines+markers',
+                      name='Altitude (M)',  
+                      yaxis='y3',
+                      stream=dict(
+                        token=stream_tokens[2],
+                        maxpoints=300)
+                        )
+
+sealevel_pressure_trace = Scatter(x=[],
+                      y=[],
+                      mode='lines+markers',
+                      name='SeaLevel Pressure',  
+                      yaxis='y4',
+                      stream=dict(
+                        token=stream_tokens[3],
+                        maxpoints=300)
+                        )
+
+# Package them into data object
+data = Data([temperature_trace, pressure_trace, altitude_trace, sealevel_pressure_trace])
+
+# Layout object
+layout = Layout(title='Streaming BMP180 Subplots',  # plot's title
+                   yaxis1= YAxis(domain=[0.0, 0.2]),       #  and range
+                   yaxis2= YAxis(domain=[0.25, 0.45]),
+                   yaxis3= YAxis(domain=[0.5, 0.7]),
+                   yaxis4= YAxis(domain=[0.75, 0.95])
+                  )
+
+figure = Figure(data=data, layout=layout)
+
+print py.plot(figure, filename='BMP180 Raspi Streaming Subplots')
+
+# create some stream objects for your traces
+temperature_stream = py.Stream(stream_tokens[0])
+pressure_stream = py.Stream(stream_tokens[1])
+altitude_stream = py.Stream(stream_tokens[2])
+sealevel_pressure_stream = py.Stream(stream_tokens[3])
+
+#open the streams!
+temperature_stream.open()
+pressure_stream.open()
+altitude_stream.open()
+sealevel_pressure_stream.open()
 
 #the main sensor reading loop
 while True:
-    stream.write({'x': i, 'y': sensor.read_temperature() })
-    print sensor.read_temperature()
-    i+=1
+    date_stamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+
+    temperature_stream.write({
+        'x': date_stamp,
+        'y': sensor.read_temperature()
+    })
+
+    pressure_stream.write({
+        'x': date_stamp,
+        'y': sensor.read_pressure()
+    })
+
+    altitude_stream.write({
+        'x': date_stamp,
+        'y': sensor.read_altitude()
+    })
+
+    sealevel_pressure_stream.write({
+        'x': date_stamp,
+        'y': sensor.read_sealevel_pressure()
+    })
+
+    print 'Temp = {0:0.2f} *C'.format(sensor.read_temperature())
+    print 'Pressure = {0:0.2f} Pa'.format(sensor.read_pressure())
+    print 'Altitude = {0:0.2f} m'.format(sensor.read_altitude())
+    print 'Sealevel Pressure = {0:0.2f} Pa'.format(sensor.read_sealevel_pressure())
+
+
     # delay between stream posts
     time.sleep(0.05)

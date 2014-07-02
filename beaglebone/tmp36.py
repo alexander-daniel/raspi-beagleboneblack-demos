@@ -1,6 +1,5 @@
 import Adafruit_BBIO.ADC as ADC
 import plotly.plotly as py
-import json
 import datetime
 import time
 
@@ -16,25 +15,31 @@ stream_server = 'http://stream.plot.ly'
 
 py.sign_in(username, api_key)
 
-print py.plot([{'x': [], 'y': [], 'type': 'scatter',
-            'stream': {'token': stream_token, 'maxpoints': 20000}
-          }], filename='BBB Streaming Example Values', fileopt='overwrite')
+print py.plot([{
+    'x': [],
+    'y': [],
+    'type': 'scatter',
+    'stream': {
+        'token': stream_token,
+        'maxpoints': 20000}}],
+    filename='BBB Streaming Example Values',
+    fileopt='overwrite')
 
 # temperature sensor connected to pin P9_40
 sensor_pin = 'P9_40'
- 
+
 ADC.setup()
 
 stream = py.Stream(stream_token)
 stream.open()
- 
+
 while True:
 
     reading = ADC.read(sensor_pin)
     millivolts = reading * 1800  # 1.8V reference = 1800 mV
     temp_c = (millivolts - 500) / 10
-    temp_f = (temp_c * 9/5) + 32
-    
+    temp_f = (temp_c * 9 / 5) + 32
+
     #print('mv=%d C=%d F=%d' % (millivolts, temp_c, temp_f))
 
     date_stamp = datetime.datetime.now()
