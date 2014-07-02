@@ -22,7 +22,7 @@ print py.plot([{
     'stream': {
         'token': stream_token,
         'maxpoints': 20000}}],
-    filename='BBB Analog Light Sensor Streaming',
+    filename='BBB Streaming Example Values',
     fileopt='overwrite')
 
 # temperature sensor connected to pin P9_40
@@ -35,13 +35,18 @@ stream.open()
 
 while True:
 
-    sensor_reading = ADC.read_raw(sensor_pin)
+    reading = ADC.read(sensor_pin)
+    millivolts = reading * 1800  # 1.8V reference = 1800 mV
+    temp_c = (millivolts - 500) / 10
+    temp_f = (temp_c * 9 / 5) + 32
+
+    #print('mv=%d C=%d F=%d' % (millivolts, temp_c, temp_f))
+
     date_stamp = datetime.datetime.now()
 
     stream.write({
         'x': date_stamp.strftime('%Y-%m-%d %H:%M:%S.%f'),
-        'y': sensor_reading
+        'y': millivolts
     })
-    print sensor_reading
 
     time.sleep(0.05)
