@@ -8,9 +8,9 @@ import time
 # Sign up to plotly here: https://plot.ly/ssu
 # View your API key and streaming tokens here: https://plot.ly/settings
 
-username = 'demos'
-api_key = 'tj6mr52zgp'
-stream_token = 'lu1xzzrt70'
+username = 'workshop'
+api_key = 'v6w5xlbx9j'
+stream_token = '25tm9197rz'
 stream_server = 'http://stream.plot.ly'
 
 py.sign_in(username, api_key)

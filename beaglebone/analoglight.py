@@ -22,7 +22,7 @@ print py.plot([{
     'stream': {
         'token': stream_token,
         'maxpoints': 20000}}],
-    filename='BBB Streaming Example Values',
+    filename='BBB Streaming Analog Light Sensor Values',
     fileopt='overwrite')
 
 # temperature sensor connected to pin P9_40
