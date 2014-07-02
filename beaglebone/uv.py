@@ -34,6 +34,9 @@ ADC.setup()
 stream = py.Stream(stream_token)
 stream.open()
 
+def mapfloat(x, in_min, in_max, out_min, out_max):
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
 while True:
 
     uv_reading = ADC.read(UV_pin)
@@ -52,7 +55,3 @@ while True:
     time.sleep(0.05)
 
 
-
-def mapfloat(x, in_min, in_max, out_min, out_max):
-
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
