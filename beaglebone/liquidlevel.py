@@ -46,4 +46,4 @@ while True:
         'y': reading 
     })
 
-    time.sleep(0.05)
+    time.sleep(0.5)

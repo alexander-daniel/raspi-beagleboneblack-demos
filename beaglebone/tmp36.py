@@ -49,4 +49,4 @@ while True:
         'y': temp_c 
     })
 
-    time.sleep(0.05)
+    time.sleep(0.5)
