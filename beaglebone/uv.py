@@ -26,7 +26,8 @@ print py.plot([{
     fileopt='overwrite')
 
 # temperature sensor connected to pin P9_40
-sensor_pin = 'P9_40'
+UV_pin = 'P9_40'
+REF_pin = 'P9_39'
 
 ADC.setup()
 
@@ -35,13 +36,23 @@ stream.open()
 
 while True:
 
-    reading = ADC.read(sensor_pin)
+    uv_reading = ADC.read(sensor_pin)
+    ref_reading = ADC.read(REF_pin)
+    outputVoltage = 3.3 / refLevel * uvLevel;
+    uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0)
     
     date_stamp = datetime.datetime.now()
 
     stream.write({
         'x': date_stamp.strftime('%Y-%m-%d %H:%M:%S.%f'),
-        'y': reading 
+        'y': uvIntensity 
     })
+    print uvIntensity
 
     time.sleep(0.05)
+
+
+
+def mapfloat(x, in_min, in_max, out_min, out_max):
+
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
