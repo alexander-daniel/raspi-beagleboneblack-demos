@@ -35,7 +35,7 @@ stream.open()
 
 while True:
 
-    sensor_reading = ADC.read(sensor_pin)
+    sensor_reading = ADC.read_raw(sensor_pin)
     date_stamp = datetime.datetime.now()
 
     stream.write({
