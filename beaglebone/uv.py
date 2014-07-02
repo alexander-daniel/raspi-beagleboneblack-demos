@@ -36,7 +36,7 @@ stream.open()
 
 while True:
 
-    uv_reading = ADC.read(sensor_pin)
+    uv_reading = ADC.read(UV_pin)
     ref_reading = ADC.read(REF_pin)
     outputVoltage = 3.3 / refLevel * uvLevel;
     uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0)
