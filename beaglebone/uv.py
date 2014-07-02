@@ -38,7 +38,7 @@ while True:
 
     uv_reading = ADC.read(UV_pin)
     ref_reading = ADC.read(REF_pin)
-    outputVoltage = 3.3 / refLevel * uvLevel;
+    outputVoltage = 3.3 / ref_reading * uv_reading;
     uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0)
     
     date_stamp = datetime.datetime.now()
