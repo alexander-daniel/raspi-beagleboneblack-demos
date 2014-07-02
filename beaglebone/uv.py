@@ -22,7 +22,7 @@ print py.plot([{
     'stream': {
         'token': stream_token,
         'maxpoints': 20000}}],
-    filename='BBB Liquid Level Streaming',
+    filename='BBB UV Sensor Streaming',
     fileopt='overwrite')
 
 # temperature sensor connected to pin P9_40
@@ -32,8 +32,6 @@ ADC.setup()
 
 stream = py.Stream(stream_token)
 stream.open()
-
-SERIESRESISTOR = 10000
 
 while True:
 
