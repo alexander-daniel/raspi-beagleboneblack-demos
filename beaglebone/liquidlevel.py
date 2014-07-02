@@ -37,7 +37,7 @@ SERIESRESISTOR = 10000
 
 while True:
 
-    reading = ADC.read(sensor_pin) - 1
+    reading = ADC.read(sensor_pin)
     
     #reading = SERIESRESISTOR / reading;
     print reading
