@@ -39,7 +39,7 @@ while True:
 
     reading = ADC.read(sensor_pin) - 1
     
-    reading = SERIESRESISTOR / reading;
+    #reading = SERIESRESISTOR / reading;
     print reading
     
     date_stamp = datetime.datetime.now()
