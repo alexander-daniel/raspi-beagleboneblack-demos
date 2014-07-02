@@ -22,36 +22,26 @@ print py.plot([{
     'stream': {
         'token': stream_token,
         'maxpoints': 20000}}],
-    filename='BBB UV Sensor Streaming',
+    filename='BBB Analog Light Sensor Streaming',
     fileopt='overwrite')
 
 # temperature sensor connected to pin P9_40
-UV_pin = 'P9_40'
-REF_pin = 'P9_39'
+sensor_pin = 'P9_40'
 
 ADC.setup()
 
 stream = py.Stream(stream_token)
 stream.open()
 
-def mapfloat(x, in_min, in_max, out_min, out_max):
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-
 while True:
 
-    uv_reading = ADC.read(UV_pin)
-    ref_reading = ADC.read(REF_pin)
-    outputVoltage = 3.3 / ref_reading * uv_reading;
-    uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0)
-    
+    sensor_reading = ADC.read(sensor_pin)
     date_stamp = datetime.datetime.now()
 
     stream.write({
         'x': date_stamp.strftime('%Y-%m-%d %H:%M:%S.%f'),
-        'y': uvIntensity 
+        'y': sensor_reading
     })
-    print uvIntensity
+    print sensor_reading
 
     time.sleep(0.05)
-
-
